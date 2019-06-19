@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<style type="text/css">
+			.box {
+
+				width: 500px;
+				/* height: 500px; */ 
+
+			}
+
+			.item {
+				float: left;
+				text-align: center;
+padding-top: 42px;
+				width: 100px;
+				height: 58px;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="box" onclick="">
+
+		</div>
+		<div class="">
+			<button type="button" onclick="update()">刷新</button>
+		</div>
+		<script type="text/javascript">
+			function randomNumber(a = 1, b = 100) {
+				// 这两个函数会做个类型转换, 假如含有其他字符,返回的是NaN
+				var max = Math.max(a, b);
+				var min = Math.min(a, b);
+				if (isNaN(max)) throw "参数不规范!";
+				return Math.floor(Math.random() * (max - min + 1) + min);
+			}
+			//即使只有一个box,也是返回的一个数组集合
+			var box = document.getElementsByClassName("box")[0];
+			console.log(box);
+			var items = document.getElementsByClassName("item");
+			items = box.getElementsByClassName("item");
+			//定义update()函数,并且指定形参n1和n2
+			//不传参数,默认是50~500的范围,不传递,形参是undefined
+			//只允许传递number类型
+			function update(n1 = 50, n2 = 5000) {
+				//防止使用者不传递参数
+				n1 = n1 == undefined ? 50 : n1;
+				n2 = n2 == undefined ? 50 : n2;
+				var str = '';
+				var v = [];
+				for (i = 0; i < 25; i++) {
+					s = randomNumber(90, 100);
+					str += '<div class="item" onclick="">' + s + '</div>';
+					v[i] = s;
+				}
+				console.log(v, v[1]);
+				box.innerHTML = str;
+				for (var i = 0; i < items.length; i++) {
+					//产生一个随机颜色
+					var r = randomNumber(0, 255);
+					var g = randomNumber(0, 255);
+					var b = randomNumber(0, 255);
+					//修改元素
+					items[i].style.backgroundColor = "rgb(" + r + "," + g + "," + b + ")";
+				}
+				var item = document.getElementsByClassName('item');
+				for (var i = 0; i < 25; i++) {
+					item[i].index = i;
+					var d = 0;
+					var value1, value2;
+					var _this;
+					item[i].onclick = function() {
+
+						d++;
+						var value = this.innerHTML;
+						var n = 1;
+						if (d == 1) {
+							value1 = value;
+							console.log(value1);
+							_this = this;
+							console.log(_this);
+						} else {
+							value2 = value;
+							console.log(value2);
+							this2 = this;
+							d = 0;
+						}
+						if (_this != this2) {
+							if (value1 == value2) {
+								box.removeChild(this2);
+								console.log(_this);
+								box.removeChild(_this);
+								console.log(this);
+								value2 = null;
+							}
+
+						} else {
+							alert('不可以点击本身！');
+							this2 = null;
+							value2 = null;
+							_this = null;
+						}
+					}
+				}
+			}
+			update(100, 200);
+		</script>
+	</body>
+</html>
