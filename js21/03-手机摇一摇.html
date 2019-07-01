@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />		
+	</head>
+	<body>
+	</body>
+	<script type="text/javascript">
+		// 手机晃动事件 -----需要硬件支持
+		// 摇一摇的功能:
+		// 1.手机中的陀螺仪加速器,相邻的两次加速器的距离差值,当达到某一值时,则认为是手机晃动值
+		//创建一个对象,存储此次晃动事件加速器的值,下x,y,z轴的值
+		var currentValue = {
+			x:0,
+			y:0,
+			z:0
+			
+		}
+		//创建一个对象,存储手机晃动后的加速器的值,也就是上一次晃动的加速器的值/
+		var lastValue = {
+			x:0,
+			y:0,
+			z:0
+		}
+		var minValue =20;//晃动事件达到的最小距离,只有达到该距离时才会执行摇一摇事件
+		//创建一个p标签存储x,y,z值
+		var p1 = document.createElement('p');
+		p1.style.fontSize = '26px';
+		p1.style.marginTop = '100px';
+		document.body.appendChild(p1);
+		//创建一个img节点,用来存储摇出的图片
+		var img = document.createElement('img');
+		img.style.width = '100%';
+		img.style.border = '1px solid blue';
+		document.body.appendChild(img);
+		var arrImg = ["img/1.jpg","img/2.jpg","img/3.jpg"];
+		function random(m,n){
+			return Math.floor(Math.random()* (n-m+1)+m);
+		}
+		//手机晃动时触发的函数
+		window.ondevicemotion =function(e){
+			var event1 = window.event||e;
+			//获取加速器对象,目的是为了获取陀螺仪中的坐标信息
+			var accelera = event1.accelerationIncludingGravtity;
+			p1.innerHTML = 'X:' + accelera.x + '<br>Y:' + accelera.y + '<br>Z:' + accelera.z;
+			//记录此次加速器的值
+			currentValue.x = accelera.x;
+			currentValue.y = accelera.y;
+			currentValue.z = accelera.z;
+			// 判断微信摇一摇事件,手机晃动事件是否达到晃动的距离
+			//math.abs(n)求n的绝对值
+			if (Math.abs(currentValue.x - lastValue.x) >= minValue||Math.abs(currentValue.y - lastValue.y) >= minValue||Math.abs(currentValue.z - lastValue.z) >= minValue) {
+				//构成晃动事件
+				var ranN = random(0,arrImg.length -1);
+				img.src = arrImg[ranN];
+			}
+			//记录上一次加速器的值
+			lastValue.x = currentValue.x;
+			lastValue.y = currentValue.y;
+			lastValue.z = currentValue.z;
+			
+		}
+		
+		
+		
+		
+	</script>
+</html>
